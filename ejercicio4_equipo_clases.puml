@@ -1,0 +1,66 @@
+@startuml
+skinparam classAttributeIconSize 0
+class EquipoMaratonProgramacion {
+  -nombre_equipo : str
+  -universidad : str
+  -lenguaje_programacion : str
+  -programadores : list[Programador]
+  -tamaño_equipo : int
+  {static} +validar_campo(campo, etiqueta) : str
+  +esta_completo() : bool
+  +añadir(programador) : None
+  +validar_composicion() : None
+}
+class Programador {
+  -nombre : str
+  -apellidos : str
+  +__init__(nombre, apellidos)
+}
+class VentanaPrincipal {
+  -root : Tk
+  -integrantes : list[tuple]
+  +__init__(root)
+  +crear_equipo() : None
+}
+EquipoMaratonProgramacion "1" *-- "2..3" Programador
+VentanaPrincipal --> EquipoMaratonProgramacion : crea
+@enduml
+
+@startuml
+left to right direction
+actor Usuario
+rectangle "Equipo de maratón" {
+  usecase "Ingresar datos del equipo" as UC1
+  usecase "Ingresar 2 o 3 programadores" as UC2
+  usecase "Validar nombres y apellidos" as UC3
+  usecase "Verificar longitud menor a 20" as UC4
+  usecase "Agregar programadores" as UC5
+  usecase "Verificar equipo completo" as UC6
+  usecase "Mostrar equipo creado" as UC7
+  usecase "Mostrar excepción" as UC8
+}
+Usuario --> UC1
+Usuario --> UC2
+UC2 .> UC3 : <<include>>
+UC3 .> UC4 : <<include>>
+UC2 .> UC5 : <<include>>
+UC5 .> UC6 : <<include>>
+UC5 .> UC7 : <<extend>>
+UC3 .> UC8 : <<extend>>
+@enduml
+
+@startuml
+object "equipo : EquipoMaratonProgramacion" as E
+object "p1 : Programador" as P1
+object "p2 : Programador" as P2
+object "p3 : Programador" as P3
+E *-- P1
+E *-- P2
+E *-- P3
+E : nombre_equipo = "EquipoUNAL"
+E : universidad = "Nacional"
+E : lenguaje_programacion = "Python"
+P1 : Pedro Pérez
+P2 : Ana Gómez
+P3 : Luis Rojas
+@enduml

@@ -1,0 +1,43 @@
+@startuml
+skinparam classAttributeIconSize 0
+class PruebaExcepciones {
+  +ejecutar() : list[str]
+}
+class VentanaPrincipal {
+  -root : Tk
+  -modelo : PruebaExcepciones
+  -salida : Text
+  +__init__(root)
+  +ejecutar() : None
+}
+VentanaPrincipal --> PruebaExcepciones : utiliza
+@enduml
+
+@startuml
+left to right direction
+actor Usuario
+rectangle "Prueba de excepciones" {
+  usecase "Ejecutar prueba" as UC1
+  usecase "Observar salida" as UC2
+  usecase "Gestionar excepciones" as UC3
+}
+Usuario --> UC1
+UC1 .> UC2 : <<include>>
+UC1 .> UC3 : <<include>>
+@enduml
+
+@startuml
+object "ventana : VentanaPrincipal" as V
+object "prueba : PruebaExcepciones" as P
+V --> P : ejecuta
+note right of P
+salida = [
+Ingresando al primer try,
+División por cero,
+Ingresando al primer finally,
+Ingresando al segundo try,
+Ocurrió una excepción,
+Ingresando al segundo finally
+]
+end note
+@enduml

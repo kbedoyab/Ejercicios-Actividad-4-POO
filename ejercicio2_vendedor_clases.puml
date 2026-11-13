@@ -1,0 +1,49 @@
+@startuml
+skinparam classAttributeIconSize 0
+class Vendedor {
+  -nombre : str
+  -apellidos : str
+  -edad : int
+  +__init__(nombre, apellidos, edad)
+  +verificar_edad(edad) : int
+  +imprimir() : str
+}
+class VentanaPrincipal {
+  -root : Tk
+  -nombre : Entry
+  -apellidos : Entry
+  -edad : Entry
+  +__init__(root)
+  +registrar() : None
+  +campo(parent, texto, fila) : Entry
+}
+VentanaPrincipal --> Vendedor : crea y valida
+@enduml
+
+@startuml
+left to right direction
+actor Usuario
+rectangle "Registro de vendedor" {
+  usecase "Ingresar nombre y apellidos" as UC1
+  usecase "Ingresar edad" as UC2
+  usecase "Validar edad" as UC3
+  usecase "Registrar vendedor" as UC4
+  usecase "Mostrar datos" as UC5
+  usecase "Mostrar excepción" as UC6
+}
+Usuario --> UC1
+Usuario --> UC2
+Usuario --> UC4
+UC4 .> UC3 : <<include>>
+UC4 .> UC5 : <<extend>>
+UC3 .> UC6 : <<extend>>
+@enduml
+
+@startuml
+object "ventana : VentanaPrincipal" as V
+object "vendedor : Vendedor" as D
+V --> D : registra
+D : nombre = "Pedro"
+D : apellidos = "Pérez"
+D : edad = 25
+@enduml

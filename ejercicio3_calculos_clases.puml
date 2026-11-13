@@ -1,0 +1,47 @@
+@startuml
+skinparam classAttributeIconSize 0
+class CalculosNumericos {
+  {static} +calcular_logaritmo_neperiano(valor : float) : float
+  {static} +calcular_raiz_cuadrada(valor : float) : float
+}
+class VentanaPrincipal {
+  -root : Tk
+  -valor : Entry
+  -logaritmo : StringVar
+  -raiz : StringVar
+  +__init__(root)
+  +calcular() : None
+}
+VentanaPrincipal ..> CalculosNumericos : invoca métodos estáticos
+@enduml
+
+@startuml
+left to right direction
+actor Usuario
+rectangle "Cálculos numéricos" {
+  usecase "Ingresar valor" as UC1
+  usecase "Calcular logaritmo" as UC2
+  usecase "Calcular raíz cuadrada" as UC3
+  usecase "Mostrar resultados" as UC4
+  usecase "Gestionar entrada no numérica" as UC5
+  usecase "Gestionar valor no positivo" as UC6
+}
+Usuario --> UC1
+Usuario --> UC2
+Usuario --> UC3
+UC2 .> UC4 : <<include>>
+UC3 .> UC4 : <<include>>
+UC1 .> UC5 : <<extend>>
+UC2 .> UC6 : <<extend>>
+UC3 .> UC6 : <<extend>>
+@enduml
+
+@startuml
+object "ventana : VentanaPrincipal" as V
+object "CalculosNumericos" as C
+V ..> C : calcula(4.0)
+note right of C
+log(4.0) = 1.386294
+sqrt(4.0) = 2.000000
+end note
+@enduml

@@ -1,0 +1,44 @@
+@startuml
+skinparam classAttributeIconSize 0
+class LeerArchivo {
+  {static} +leer(ruta : str) : str
+}
+class VentanaPrincipal {
+  -root : Tk
+  -ruta : StringVar
+  -contenido : Text
+  +__init__(root)
+  +seleccionar() : None
+}
+class FileInputStream <<conceptual>>
+class InputStreamReader <<conceptual>>
+class BufferedReader <<conceptual>>
+VentanaPrincipal --> LeerArchivo : solicita lectura
+LeerArchivo ..> FileInputStream : flujo de bytes equivalente
+LeerArchivo ..> InputStreamReader : decodificación
+LeerArchivo ..> BufferedReader : lectura de texto
+@enduml
+
+@startuml
+left to right direction
+actor Usuario
+rectangle "Lector de archivos" {
+  usecase "Seleccionar archivo .txt" as UC1
+  usecase "Leer archivo" as UC2
+  usecase "Mostrar contenido" as UC3
+  usecase "Gestionar error de lectura" as UC4
+}
+Usuario --> UC1
+UC1 .> UC2 : <<include>>
+UC2 .> UC3 : <<include>>
+UC2 .> UC4 : <<extend>>
+@enduml
+
+@startuml
+object "ventana : VentanaPrincipal" as V
+object "lector : LeerArchivo" as L
+V --> L : leer("prueba.txt")
+note right of L
+contenido = "Maratón de programación\nLectura de archivos de texto."
+end note
+@enduml
